@@ -1,0 +1,55 @@
+#!/usr/bin/python
+
+# pluo, Apr 1, 2013
+# PATH=$PATH:/home/dataproc/bi/lib/python # add python lib to path
+# csv_to_hive --hive_db='staging' --hive_table='fact_property_view_partition' --hive_partition="date_int=20130428" /tmp/fact_property_view.csv
+
+import legoo
+import sys
+from optparse import OptionParser
+
+def main():
+  parser = OptionParser()
+  parser.add_option("--hive_node", dest="hive_node",
+                    help="target hive node. default: [hive-cdh4-prod]", default='hive-cdh4-prod')
+  parser.add_option("--hive_port", dest="hive_port",
+                    help="target hive port number. default: 10000", default='10000')
+  parser.add_option("--hive_db", dest="hive_db",
+                    help="target hive db. default: [staging]", default='staging')
+  parser.add_option("--hive_table", dest="hive_table",
+                    help="MANDATORY: hive table name")
+  parser.add_option("--hive_partition", dest="hive_partition",
+                    help="For partition table, partition name i.e. date_int=20130428")
+  parser.add_option("--hive_create_table", dest="hive_create_table",
+                    help="CREATE_TABLE flag for hive table DDL. default: [N]", default='N')
+  parser.add_option("--hive_overwrite", dest="hive_overwrite",
+                    help="OVERWRITE flag for hive table loading. default to [N] as append mode", default='N')
+  parser.add_option("--mapred_job_priority", dest="mapred_job_priority",
+                    help="map reduce job priority [VERY_HIGH, HIGH, NORMAL, LOW, VERY_LOW]",  default='NORMAL')
+  parser.add_option("--csv_header", dest="csv_header",
+                    help="csv header flag. default: [Y]", default='Y')
+
+  parser.add_option("--remove_carriage_return", dest="remove_carriage_return",
+                    help="remove carriage return from mysql source table. default: [N]", default='N')
+  parser.add_option("--csv_file", dest="csv_file", help="csv file")
+  parser.add_option("--csv_delimiter", dest="csv_delimiter", help="delimiter for csv file, default: [tab]", default='tab')
+  parser.add_option("--debug", dest="debug", help="debug flag [Y|N], default: [N]", default='N')
+  (options, args) = parser.parse_args()
+
+  legoo.csv_to_hive(  hive_node              = options.hive_node, \
+                      hive_port              = options.hive_port, \
+                      hive_db                = options.hive_db, \
+                      hive_create_table      = options.hive_create_table, \
+                      hive_table             = options.hive_table, \
+                      hive_overwrite         = options.hive_overwrite, \
+                      hive_partition         = options.hive_partition, \
+                      mapred_job_priority    = options.mapred_job_priority, \
+                      csv_file               = options.csv_file, \
+                      csv_header             = options.csv_header, \
+                      csv_delimiter          = options.csv_delimiter, \
+                      remove_carriage_return = options.remove_carriage_return, \
+                      debug                  = options.debug
+                      )
+if __name__ == '__main__':
+  main()
+
