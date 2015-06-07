@@ -1,4 +1,4 @@
-Legoo: A collection of automation modules to build analytics infrastructure
+Legoo: big data ETL tool
 =====
 
 `legoo` is a collection of automation modules to build analytics infrastructure consists `CSV`, `MySQL`, `Hive` and `HBase` (incubating). It's written in `Python` and provides ease of programming, flexibility, transparency, and extensibility.
